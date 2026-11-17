@@ -111,8 +111,19 @@ export function segmented(options, value, onChange, { name = "seg" } = {}) {
   return wrap;
 }
 
+let fieldSeq = 0;
+// A single input/select/textarea is wrapped in <label> (tapping the label focuses it).
+// A group of buttons (chips, segmented control) must NOT be inside a <label>: mobile browsers
+// forward every tap inside a label to its FIRST button, so only the first chip could be picked.
 export function field(label, control, hint) {
-  return h("label", { class: "field" }, h("span", { class: "label" }, label), control, hint && h("small", { class: "hint" }, hint));
+  const single = ["INPUT", "SELECT", "TEXTAREA"].includes(control?.tagName);
+  if (single) {
+    return h("label", { class: "field" }, h("span", { class: "label" }, label), control, hint && h("small", { class: "hint" }, hint));
+  }
+  const id = `fld-${++fieldSeq}`;
+  if (!control.hasAttribute("aria-labelledby")) control.setAttribute("aria-labelledby", id);
+  return h("div", { class: "field", role: "group", "aria-labelledby": id },
+    h("span", { class: "label", id }, label), control, hint && h("small", { class: "hint" }, hint));
 }
 
 export function card(...children) { return h("section", { class: "card" }, ...children); }

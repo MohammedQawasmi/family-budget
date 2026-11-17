@@ -117,5 +117,12 @@ applyTheme();
 boot();
 
 if ("serviceWorker" in navigator && location.protocol === "https:") {
-  navigator.serviceWorker.register("sw.js").catch(() => {});
+  navigator.serviceWorker.register("sw.js", { updateViaCache: "none" }).catch(() => {});
+  // When a new version takes over, reload once so the new code runs.
+  const hadOldVersion = !!navigator.serviceWorker.controller;   // first visit: nothing to replace, no reload
+  let reloaded = false;
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (reloaded || !hadOldVersion) return;
+    reloaded = true; location.reload();
+  });
 }
