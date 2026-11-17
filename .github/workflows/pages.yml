@@ -26,7 +26,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Safety check (no secret key in the app)
         run: |
-          if grep -rq "sb_secret_" app/; then echo "Secret key found in app/ - refusing to deploy"; exit 1; fi
+          # Matches a real key (sb_secret_ + 10 or more key characters), not the warning comment in config.js.
+          if grep -rEq "sb_secret_[A-Za-z0-9_-]{10,}" app/; then echo "Secret key found in app/ - refusing to deploy"; exit 1; fi
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
