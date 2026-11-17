@@ -122,4 +122,6 @@ app/                     the web app (this folder is what GitHub Pages publishes
 - **2026-11-17: Supabase URL copied with `/rest/v1/`.** The Data API page shows the REST endpoint (`https://<ref>.supabase.co/rest/v1/`). `tools/supa.py` strips a trailing `/rest/v1/` or `/auth/v1/` automatically, and `app/config.js` stores the clean base URL.
 - **2026-11-17: SQL can't be run from the tools.** The publishable and secret keys work only with the REST and Auth APIs, not raw SQL. Schema changes are pasted into Supabase → SQL Editor by the user, then `test_rls.py` is run.
 - **Sign-ups must be turned off by hand:** Supabase → Authentication → Sign In / Providers → turn off "Allow new users to sign up". `test_rls.py` fails until this is done.
+- **2026-11-17: deploy guard false alarm.** The first deploy failed because the check `grep "sb_secret_"` matched the warning comment in `app/config.js`. It now matches only a real key (`sb_secret_` followed by 10 or more key characters).
+- **Live:** https://mohammedqawasmi.github.io/family-budget/ (repo `MohammedQawasmi/family-budget`). Deploying = commit + push to `main`.
 - **Chart colors:** the reference dataviz palette's slots 1–3 (income blue, expenses orange, savings aqua) pass the validator in both light and dark mode. Light-mode aqua is below 3:1 contrast, so the dashboard always includes the category table.
