@@ -1,0 +1,12 @@
+.env
+credentials.json
+token.json
+.tmp/
+__pycache__/
+*.pyc
+
+# Never publish personal financial files or backups
+*.xlsx
+*.xls
+*.csv
+backups/
